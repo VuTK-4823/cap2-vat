@@ -2,7 +2,8 @@ const fs = require("fs-extra");
 const path = require("path");
 const { Client } = require("pg");
 const crypto = require("crypto");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+
 
 async function runMigrations() {
   const dbConfig = {
@@ -13,6 +14,7 @@ async function runMigrations() {
     port: parseInt(process.env.PGPORT, 10),
   };
   const client = new Client(dbConfig);
+console.log("Loaded password:", process.env.PGPASSWORD);
 
   function calculateChecksum(content) {
     return crypto.createHash("sha256").update(content, "utf8").digest("hex");
